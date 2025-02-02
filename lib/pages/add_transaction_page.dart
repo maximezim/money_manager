@@ -174,7 +174,8 @@ class AddTransactionPageState extends State<AddTransactionPage> {
                   borderRadius: BorderRadius.circular(12),
                   side: BorderSide(color: Theme.of(context).dividerColor),
                 ),
-                title: Text('Date: ${_selectedDate.toLocal()}'.split(' ')[0]),
+                title: Text(
+                    'Date: ${_selectedDate.toLocal().toString().split(' ')[0]}'),
                 trailing: const Icon(Icons.calendar_today),
                 onTap: _pickDate,
               ),

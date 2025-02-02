@@ -62,6 +62,7 @@ class EditTransactionPageState extends State<EditTransactionPage> {
         description: _description,
       );
       await TransactionRepository.updateTransaction(widget.index, updated);
+      if (!mounted) return;
       Navigator.pop(context);
     }
   }
@@ -86,9 +87,9 @@ class EditTransactionPageState extends State<EditTransactionPage> {
         ],
       ),
     );
-
     if (confirmed == true) {
       await TransactionRepository.deleteTransaction(widget.index);
+      if (!mounted) return;
       Navigator.pop(context);
     }
   }
@@ -197,7 +198,8 @@ class EditTransactionPageState extends State<EditTransactionPage> {
               ),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                title: Text('Date: ${_selectedDate.toLocal()}'.split(' ')[0]),
+                title: Text(
+                    'Date: ${_selectedDate.toLocal().toString().split(' ')[0]}'),
                 trailing: const Icon(Icons.calendar_today),
                 onTap: _pickDate,
               ),
