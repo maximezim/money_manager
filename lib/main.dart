@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:money_manager/pages/home_page.dart';
+import 'package:money_manager/repositories/account_repository.dart';
+import 'package:money_manager/repositories/category_repository.dart';
 import 'repositories/transaction_repository.dart';
 
 void main() async {
@@ -21,6 +23,8 @@ void main() async {
   );
 
   await TransactionRepository.loadTransactions();
+  await CategoryRepository.loadCategories();
+  await AccountRepository.loadAccounts();
 
   runApp(const MainApp());
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/category.dart';
 
 class CategoryRepository {
@@ -9,7 +11,24 @@ class CategoryRepository {
     Category(name: 'Salary'),
   ];
 
-  static void addCategory(Category category) {
+  static Future<void> loadCategories() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? data = prefs.getString('categories');
+    if (data != null) {
+      final List<dynamic> jsonList = jsonDecode(data);
+      categories.clear();
+      categories.addAll(jsonList.map((e) => Category.fromJson(e)).toList());
+    }
+  }
+
+  static Future<void> saveCategories() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String data = jsonEncode(categories.map((e) => e.toJson()).toList());
+    await prefs.setString('categories', data);
+  }
+
+  static Future<void> addCategory(Category category) async {
     categories.add(category);
+    await saveCategories();
   }
 }
