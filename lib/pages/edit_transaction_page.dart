@@ -62,7 +62,33 @@ class EditTransactionPageState extends State<EditTransactionPage> {
         description: _description,
       );
       await TransactionRepository.updateTransaction(widget.index, updated);
-      if (!mounted) return;
+      Navigator.pop(context);
+    }
+  }
+
+  void _deleteTransaction() async {
+    // Confirm deletion with the user.
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Transaction'),
+        content:
+            const Text('Are you sure you want to delete this transaction?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      await TransactionRepository.deleteTransaction(widget.index);
       Navigator.pop(context);
     }
   }
@@ -247,6 +273,14 @@ class EditTransactionPageState extends State<EditTransactionPage> {
               ElevatedButton(
                 onPressed: _saveTransaction,
                 child: const Text('Save'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                onPressed: _deleteTransaction,
+                child: const Text('Delete Transaction'),
               )
             ],
           ),

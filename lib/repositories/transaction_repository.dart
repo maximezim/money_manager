@@ -46,4 +46,12 @@ class TransactionRepository {
       await saveTransactions();
     }
   }
+
+  static Future<void> deleteTransaction(int index) async {
+    if (index >= 0 && index < _transactions.length) {
+      _transactions.removeAt(index);
+      transactionsNotifier.value = List.from(_transactions);
+      await saveTransactions();
+    }
+  }
 }
